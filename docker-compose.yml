@@ -1,0 +1,35 @@
+version: "2.1"
+services:
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+    networks:
+      lshr_network:
+        aliases:
+          - db
+    volumes:
+      - "mysql_volume:/var/lib/mysql"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+  
+  lshr:
+    image: dmitriyshazhko/link_shrinker
+    ports:
+      - 5000:5000
+    networks:
+      lshr_network:
+        aliases:
+          - lshr
+    depends_on:
+      db:
+        condition: service_healthy
+  
+networks:
+  lshr_network:
+
+volumes:
+  mysql_volume:
+    

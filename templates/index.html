@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>LinkShrinker</title>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <form action="/" method="POST" class="form">
+            <div class="link-block">
+                <input name="link" name="link" type="text" class="link-input input" placeholder="Введите ссылку">
+                <button class="btn" type="submit">Сократить ссылку</button>
+            </div>
+            <div class="params-block">
+                <input name="alias" type="text" class="alias-input input" placeholder="Алиас">
+                <input name="password" type="text" class="password-input input" placeholder="Пароль">
+            </div>
+        </form>
+        {% if error_message %}
+        <h3 class="error-message">{{error_message}}</h3>
+        {% endif %}
+
+        {% if shrinked_link %}
+        <div class="result-block">
+            <a href={{ shrinked_link }} class="shrinked-link">{{ shrinked_link }}</a>
+            <img class="qr-image" src="{{ qrcode(shrinked_link) }}">
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
